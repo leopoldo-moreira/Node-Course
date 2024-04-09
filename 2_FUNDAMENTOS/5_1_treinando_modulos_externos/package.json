@@ -1,0 +1,14 @@
+{
+  "name": "5_1_treinando_modulos_externos",
+  "version": "1.0.0",
+  "description": "treinando modulos externos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Leopoldo",
+  "license": "ISC",
+  "dependencies": {
+    "minimist": "^1.2.8"
+  }
+}
