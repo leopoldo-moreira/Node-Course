@@ -1,0 +1,21 @@
+{
+  "name": "6_pratica_com_args",
+  "version": "1.0.0",
+  "description": "curso npm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "modulo",
+    "internos",
+    "e",
+    "externos",
+    "juntos"
+  ],
+  "author": "Leopoldo",
+  "license": "ISC",
+  "dependencies": {
+    "minimist": "^1.2.8"
+  }
+}
