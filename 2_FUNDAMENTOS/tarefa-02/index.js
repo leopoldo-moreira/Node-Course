@@ -1,7 +1,7 @@
 const chalk = require('chalk')
 const inquirer = require('inquirer')
 
-const formatadText = (text) =>{
+const formatedText = (text) =>{
     console.log(chalk.bgYellow.black(text))
 }
 
@@ -21,7 +21,7 @@ inquirer.prompt(questions)
     const name = answer.userName;
     const age = answer.userAge;
     const text = `Olá ${name}, voçê tem ${age} anos`
-    formatadText(text)
+    formatedText(text)
 })
 .catch((error) =>{
     console.log(error)
