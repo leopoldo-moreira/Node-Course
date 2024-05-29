@@ -11,6 +11,7 @@ const server = http.createServer((req,res) =>{
     res.setHeader('Content-type', 'Text/plain')
 
     if (urlInfo.path === '/'){
+       
         res.end('Welcome to the homepage!')
     }else if (urlInfo.path === '/hello'){
         res.end('Hello, world!')
