@@ -54,7 +54,7 @@ function buildAccount() {
         )        
       );
       buildAccount();
-      return
+      return;
     }
 
     fs.writeFileSync(
