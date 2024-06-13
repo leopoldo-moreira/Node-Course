@@ -141,14 +141,25 @@ function checkAccount(accountName) {
 
 function addAmount(accountName, amount) {
 
-  const account = getAccount(accountName);
+  const accountData = getAccount(accountName);
 
   if (!amount) {
-    console.error(`An error has occurred. Please try again later.`);
+    errorMsg('An error occurred. Please try again later.');
     return deposit();
   }
 
-  console.log(account);
+  accountData.balance = parseFloat(amount) + parseFloat(accountData.balance);
+  fs.writeFileSync(
+   `./accounts/${accountName}.json`,
+   JSON.stringify(accountData),
+   (err) => {
+    console.error(err)
+   }
+  );
+
+  console.clear();
+  successMsg(`The amount of $${amount} has been deposited in your account.`);
+  
 
 }
 
@@ -161,3 +172,17 @@ function getAccount(accountName) {
   return JSON.parse(accountJSON);
 
 }
+
+function errorMsg(text) {  
+  console.error(
+    chalk.bgRed.bold(text)    
+  );
+};
+
+function successMsg(text) {
+  console.log(
+    chalk.bgGreen.bold(text)
+  );
+};
+
+
