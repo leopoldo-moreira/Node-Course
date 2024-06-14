@@ -31,6 +31,7 @@ function operation() {
       } else if (action === "Deposit") {
         deposit();
       } else if (action === "Balance") {
+        getAccountBalance();
       } else if (action === "Withdraw") {
       } else if (action === "Exit") {
         console.clear();
@@ -129,13 +130,14 @@ function deposit() {
 
 function checkAccount(accountName) {
   if (!fs.existsSync(`./accounts/${accountName}.json`)) {
+    console.clear();
     console.log(
       chalk.bgRed.black(
         `The account name ${accountName} does not exist! Please try again.`
       )
-    );
+    );    
     return false;
-  }
+  }  
   return true;
 }
 
@@ -168,10 +170,8 @@ function getAccount(accountName) {
     encoding: 'utf8',
     flag: 'r'
   });
-
   return JSON.parse(accountJSON);
-
-}
+};
 
 function errorMsg(text) {  
   console.error(
@@ -185,4 +185,35 @@ function successMsg(text) {
   );
 };
 
+function infoMsg(text) {
+  console.log(
+    chalk.bgBlue.bold(text)
+  );
+};
 
+// show account balance
+
+function getAccountBalance() {
+  inquirer.prompt([
+    {
+      name: 'accountName',
+      message: 'Whats is your account name?'
+    }
+  ]).then(
+    (answer) => {
+      const accountName = answer["accountName"];
+
+      // verify if account exists
+
+      if (!checkAccount(accountName)) {
+        return getAccountBalance();
+      }
+
+      const accountData = getAccount(accountName);
+
+      infoMsg(`Your account balance is $${accountData.balance}.`);
+      operation();
+
+    }
+  ).catch((err) => console.error(err));
+};
