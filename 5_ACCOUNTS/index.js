@@ -33,6 +33,7 @@ function operation() {
       } else if (action === "Balance") {
         getAccountBalance();
       } else if (action === "Withdraw") {
+        withdraw();
       } else if (action === "Exit") {
         console.clear();
         console.log(chalk.bgBlue.black("Thank you for using Accounts App!"));
@@ -216,4 +217,64 @@ function getAccountBalance() {
 
     }
   ).catch((err) => console.error(err));
+};
+
+
+// withdraw an amount from user account
+function withdraw() {
+  inquirer.prompt([
+    {
+      name: 'accountName',
+      message: 'Type your account name: '
+    }
+  ]).then((answer) => {
+
+    const accountName = answer['accountName'];
+    if (!checkAccount(accountName)) {
+      return withdraw();
+    }
+
+    inquirer.prompt([
+      {
+        name: 'amount',
+        message: 'How much to withdraw?'
+      }
+    ]).then((answer) => {
+
+      const amount = answer['amount']
+      removeAmount(accountName, amount);
+
+    })
+    .catch(err => console.log(err));
+
+  }).catch(err => console.log(err));
+};
+
+function removeAmount(accountName, amount) {
+
+  const accountData = getAccount(accountName);
+
+  if(!amount){
+    errorMsg('An error occurred. Please try again later.'); 
+    return withdraw();
+  }
+
+  if(accountData.balance < amount) {
+    errorMsg('Insufficient balance');
+    return withdraw();
+  }
+
+  accountData.balance = parseFloat(accountData.balance) - parseFloat(amount);
+
+  fs.writeFileSync(
+    `accounts/${accountName}.json`,
+    JSON.stringify(accountData),
+    (err) => {
+      console.log(err)
+    },
+  );
+
+  successMsg(`Withdrawal of ${amount} completed successfully`);
+  operation();
+
 };
