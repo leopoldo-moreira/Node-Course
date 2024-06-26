@@ -1,0 +1,17 @@
+body {
+    background-color: #dfdfdf;  
+    text-align: center;
+    padding: 2em;  
+}
+
+body > div {
+    border: 1px solid black;
+    width: 50%;
+    margin: auto auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+body > div > a {
+    text-decoration: none;    
+}
