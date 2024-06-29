@@ -1,0 +1,44 @@
+const express = require("express");
+const exphbs = require("express-handlebars");
+const app = express();
+const port = 3000;
+
+app.engine("handlebars", exphbs.engine());
+app.set("view engine", "handlebars");
+
+app.get("/blogpost", (req, res) => {
+  const post = {
+    title: "Aprenda Node.js",
+    category: "JavaScript",
+    content: "Nesse post voce vai aprender as bases do node.js...",
+    comments: 4,
+  };
+
+
+  res.render('post', { post });
+
+});
+
+app.get("/dashboard", (req, res) => {
+  const items = ["Item a", "Item b", "Item c"];
+
+  res.render("dashboard", { items });
+});
+
+app.get("/", (req, res) => {
+  const user = {
+    name: "Leopoldo",
+    surname: "Moreira",
+    age: 32,
+  };
+
+  const words = "This is a test words.";
+  const auth = false;
+  const approved = false;
+
+  res.render("home", { user: user, words, auth, approved });
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});

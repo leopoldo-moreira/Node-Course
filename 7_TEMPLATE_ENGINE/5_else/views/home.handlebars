@@ -1,0 +1,14 @@
+<h1>Handlebars</h1>
+<p>Nome do usuário: {{ user.name }} {{ user.surname }}</p>
+<p>Idade do usuário: {{ user.age }}</p>
+<p>{{ words }}</p>
+
+{{#if approved}}
+<P>
+    Parabéns, seu cadastrado foi concluido! você pode acessar o sistema.
+</P>
+{{ else }}
+<p>
+    Seu cadastro precisa de permissão para acessar o sistema.
+</p>
+{{/if}}
