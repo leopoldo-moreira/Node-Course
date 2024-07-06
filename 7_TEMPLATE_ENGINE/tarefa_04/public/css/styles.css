@@ -1,0 +1,10 @@
+.products-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2em;
+}
+
+.product-card{    
+    text-align: center;
+}
