@@ -20,6 +20,22 @@ app.set('view engine', 'handlebars');
 // configurando os assets
 app.use(express.static('public'));
 
+// resgatando dados do DB
+app.get('/books', (req, res) => {
+  const sql = 'SELECT * FROM books';  
+
+    conn.query(sql, (err, data) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      const books = data;
+      res.render('books', { books });
+    });
+  
+});
+
 //inserindo dados no DB
 app.post('/books/insertbook', (req, res) => {
   const title = req.body.title;
