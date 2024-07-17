@@ -1,6 +1,5 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
-const mysql = require('mysql');
 const port = 3000;
 const pool = require('./db/conn');
 
@@ -17,7 +16,7 @@ app.use(express.json());
 // configurando o handlebars
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
-('');
+
 // configurando os assets
 app.use(express.static('public'));
 
