@@ -45,19 +45,33 @@ app.set('view engine', 'handlebars');
 // Setting assets
 app.use(express.static('public'));
 
-// some functions
+//Update Dates in DB
 
-const cpfValidator = (cpfToValidadte) => {
-  return cpf.isValid(cpfToValidadte);
-};
+app.post('/broker/updatebroker', (req, res) => {
+  const id = req.body.id;
+  const name = req.body.name;
+  const cpf = req.body.cpf;
+  const creci = req.body.creci;
 
-function creciValidator(creciToValidate) {
-  const regex = /^\d{5}$/;
-  return regex.test(creciToValidate);
-}
+  const sql = 'UPDATE corretores SET ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?';
+  const data = ['name', name, 'cpf', cpf, 'creci', creci, 'id', id];
+
+  pool.query(sql, data, (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    req.session.message = {
+      type: 'greenMsg',
+      content: 'Corretor alterado com sucesso!'
+    };
+
+    res.redirect('/');
+  });
+});
 
 // to edit data
-
 app.get('/broker/edit/:id', (req, res) => {
   const id = req.params.id;
   const sql = 'SELECT * FROM corretores WHERE ?? = ?';
@@ -108,36 +122,6 @@ app.post('/brokers/newbroker', (req, res) => {
   const cpf = req.body.cpf;
   const creci = req.body.creci;
 
-  if (!cpfValidator(cpf)) {
-    req.session.message = {
-      type: 'redMsg',
-      content: 'CPF Invalido!',
-    };
-
-    req.session.data = {
-      name: name,
-      cpf: cpf,
-      creci: creci,
-    };
-
-    return res.redirect('/');
-  }
-
-  if (!creciValidator(creci)) {
-    req.session.message = {
-      type: 'redMsg',
-      content: 'CRECI Invalido!',
-    };
-
-    req.session.data = {
-      name: name,
-      cpf: cpf,
-      creci: creci,
-    };
-
-    return res.redirect('/');
-  }
-
   const sql = 'INSERT INTO corretores (??, ??, ??) VALUES (?, ?, ?)';
   const data = ['name', 'cpf', 'creci', name, cpf, creci];
 
@@ -158,12 +142,19 @@ app.post('/brokers/newbroker', (req, res) => {
 
 // Render home
 app.get('/', (req, res) => {
-  let userData = req.session.data;
-  req.session.data = null;
-  let userEdit = req.session.edit;
-  req.session.edit = null;  
+  let toEdit;
+  let message;
 
-  
+  // Caso seja um Edit Mode
+  if (req.session.edit) {
+    toEdit = req.session.edit;
+    req.session.edit = null;
+  }
+
+  if (req.session.message) {
+    message = req.session.message;
+    req.session.messsage = null;
+  }
 
   const sql = 'SELECT * FROM corretores';
 
@@ -172,13 +163,15 @@ app.get('/', (req, res) => {
       console.error(err);
       return;
     }
-
     const corretores = data;
 
-    const message = req.session.message;
-    req.session.messsage = null;
-
-    res.render('home', { corretores, message, userData, userEdit });
+    if (toEdit) {
+      const url = '/broker/updatebroker';
+      res.render('home', { corretores, toEdit, url });
+    } else {
+      const url = '/brokers/newbroker';
+      res.render('home', { corretores, message, url });
+    }
   });
 });
 

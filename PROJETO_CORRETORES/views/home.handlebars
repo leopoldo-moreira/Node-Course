@@ -1,41 +1,53 @@
-<h1>Cadastre o Corretor</h1>
-<form action="/brokers/newbroker" method="POST">
+{{#if toEdit}}
+<h1>Editar Corretor</h1>
+{{else}}
+<h1>Cadastrar Corretor</h1>
+{{/if}}
+
+
+<form id="broker-form" action="{{ url }}" method="POST">
   <div>
+    <input type="hidden" name="id" value="{{toEdit.id}}">
     <label for="name">Nome:</label>
-    <input value="{{#if userData.name}}{{userData.name}}{{else}}{{userEdit.name}}{{/if}}" type="text" id="name" name="name" placeholder="Digite o Nome" required>
+    <input value="{{toEdit.name}}" type="text" id="name" name="name" placeholder="Digite o Nome" required>
   </div>
   <div>
     <label for="cpf">CPF:</label>
-    <input value="{{userData.cpf}}" type="text" id="cpf" name="cpf" placeholder="Digite o CPF" required>
+    <input value="{{toEdit.cpf}}" type="text" id="cpf" name="cpf" placeholder="Digite o CPF" required>
   </div>
   <div>
     <label for="creci">CRECI:</label>
-    <input value="{{userData.creci}}" type="text" id="creci" name="creci" placeholder="Digite o CRECI" required>
+    <input value="{{toEdit.creci}}" type="text" id="creci" name="creci" placeholder="Digite o CRECI" required>
   </div>
+  {{#if toEdit}}
+  <input type="submit" value="Salvar">
+  {{else}}
   <input type="submit" value="Cadastrar">
+  {{/if}}
 </form>
-{{#if message}}
-  <p id="message" class="{{message.type}}">{{message.content}}</p>
-{{/if}}
+
+<p style="display: block" id="msg"></p>
+<p id="message" class="{{message.type}}">{{message.content}}</p>
+
 <hr>
 {{#if corretores}}
-  <h2>Corretores Cadastrados:</h2>
-  <table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>CRECI</th>
-                <th>Editar</th>
-                <th>Remover</th>
-            </tr>
-        </thead>
-        <tbody>
-          {{#each corretores}}
-            {{> brokers}}
-          {{/each}}        
-        </tbody>
-    </table>
+<h2>Corretores Cadastrados:</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>CRECI</th>
+      <th>Editar</th>
+      <th>Remover</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each corretores}}
+    {{> brokers}}
+    {{/each}}
+  </tbody>
+</table>
 {{else}}
-  <h2>Não há corretores cadastrados.</h2>
+<h2>Não há corretores cadastrados.</h2>
 {{/if}}

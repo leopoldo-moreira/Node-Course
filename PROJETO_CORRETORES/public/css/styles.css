@@ -60,3 +60,9 @@ th, td {
   font-weight: bold;
   font-size: 2em;
 }
+
+p {
+  margin: 0;  
+  height: 1em;
+  text-align: center;
+}
