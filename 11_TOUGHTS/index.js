@@ -61,8 +61,8 @@ app.use(express.static('public'));
 // set session to res
 app.use((req, res, next) => {
 
-    if(req.session.userid) {
-        res.locals.session = req.session
+    if(req.session && req.session.userid) {
+        res.locals.session = req.session;
     }
 
     next();
@@ -76,7 +76,8 @@ app.get('/', ToughtController.showToughts);
 
 // iniciando o servidor
 conn
-    .sync() //.sync({ force: true }) - reseta o banco de dados Dados sao perdidos
+    .sync()
+    //.sync({ force: true }) //- reseta o banco de dados Dados sao perdidos
     .then(() => {
         app.listen(port, () => {
             console.log(`Server running at http://localhost:${port}`);
