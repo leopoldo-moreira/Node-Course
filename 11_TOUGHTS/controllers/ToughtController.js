@@ -23,9 +23,7 @@ module.exports = class ToughtController {
             res.redirect('/login');
         }
 
-        const toughts = user.Toughts.map((result) => result.dataValues);
-
-        console.log(toughts);
+        const toughts = user.Toughts.map((result) => result.dataValues);        
         
         res.render('toughts/dashboard', { toughts });
     }
