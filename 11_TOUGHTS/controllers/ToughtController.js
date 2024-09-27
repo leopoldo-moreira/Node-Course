@@ -23,8 +23,8 @@ module.exports = class ToughtController {
             res.redirect('/login');
         }
 
-        const toughts = user.Toughts.map((result) => result.dataValues);        
-        
+        const toughts = user.Toughts.map((result) => result.dataValues);
+
         res.render('toughts/dashboard', { toughts });
     }
 
@@ -51,9 +51,30 @@ module.exports = class ToughtController {
         } catch (error) {
             console.log(error);
         }
+    }
 
+    static async removeTought(req, res) {
+        const id = req.body.id;
+        const UserId = req.session.userid;
 
+        try {
 
+            await Tought.destroy({
+                where: {
+                    id: id,
+                    UserId: UserId
+                }
+            });
+
+            req.flash('message', 'Pensamento removido com sucesso!');
+
+            req.session.save(() => {
+                res.redirect('/toughts/dashboard');
+            });
+
+        } catch (error) {
+            console.error(error)
+        }
     }
 
 }
